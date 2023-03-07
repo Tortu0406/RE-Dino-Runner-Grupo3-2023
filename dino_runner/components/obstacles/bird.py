@@ -4,9 +4,9 @@ from dino_runner.utils.constants import BIRD
 
 
 class Bird(Obstacle):
-    def __init__(self, image):
+    def __init__(self, image, pos_y):
         super().__init__(image, 0)
-        self.rect.y = 265
+        self.rect.y = pos_y
         self.step_index = 0
         
     def update(self, game_speed, obstacles):

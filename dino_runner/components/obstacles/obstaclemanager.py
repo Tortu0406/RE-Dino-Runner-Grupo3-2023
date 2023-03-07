@@ -20,8 +20,8 @@ class ObstacleManager:
                 self.obstacles.append(large)
                 
             else:
-                self.obstacles.append(Bird(BIRD))
-            
+                self.obstacles.append(Bird(BIRD, random.randint(220, 300)))
+
         for obstacle in self.obstacles:
             obstacle.update(game.game_speed, self.obstacles)
             if game.player.dino_rest.colliderect(obstacle.rect):
