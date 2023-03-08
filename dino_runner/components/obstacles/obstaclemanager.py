@@ -1,3 +1,4 @@
+import time
 import pygame
 from dino_runner.components.obstacles.bird import Bird
 from dino_runner.components.obstacles.cactus import Cactus
@@ -8,7 +9,6 @@ class ObstacleManager:
     
     def __init__(self):
         self.obstacles = []
-    
     def update(self, game):
         ran = random.randint(0,2)
         if len(self.obstacles) == 0:
@@ -27,8 +27,12 @@ class ObstacleManager:
             if game.player.dino_rest.colliderect(obstacle.rect):
                 pygame.time.delay(1000)
                 game.playing = False
-                break
+                game.death_count += 1
+                game.END = time.time()
             
     def draw(self, screen):
         for obstacle in self.obstacles:
             obstacle.draw(screen)
+            
+    def reset_obstacles(self):
+        self.obstacles = []

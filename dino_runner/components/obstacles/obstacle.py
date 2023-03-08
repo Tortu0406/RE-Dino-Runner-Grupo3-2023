@@ -8,9 +8,6 @@ class Obstacle(Sprite):
         self.image = image[self.type]
         self.rect = self.image.get_rect()
         self.rect.x = SCREEN_WIDTH
-        self.bird_fly = True
-        if image == BIRD:
-            self.bird_fly = True
         
     def update(self, game_speed, obstacles):
         self.rect.x -= game_speed

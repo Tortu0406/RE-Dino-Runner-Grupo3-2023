@@ -80,9 +80,6 @@ class Dino(Sprite):
         if self.dino_jump:
             self.dino_rest.y -= self.jump_vel * 4
             self.jump_vel -= 0.8 # controlamos estos valores para poder conseguir un numero negativo y asi poder cambiar de posicion
-            print("Valor de Y", self.dino_rest.y)
-            print("Valor de constante", self.JUMP_VEL)
-            print("Valor de alterado", self.jump_vel)
         if self.jump_vel < -self.JUMP_VEL :# si es menor al valor negativo del global
             self.dino_rest.y = self.Y_POS# se altera estado en Y
             self.dino_jump = False 
