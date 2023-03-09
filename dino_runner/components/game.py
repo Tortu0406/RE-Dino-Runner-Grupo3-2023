@@ -5,12 +5,13 @@ from dino_runner.components.dino import Dino
 from dino_runner.components.obstacles.obstaclemanager import ObstacleManager
 from dino_runner.components import text_utils
 from dino_runner.components.power_ups.power_up_manager import PowerUpManager
-from dino_runner.utils.constants import BG, ICON, RUNNING, SCREEN_HEIGHT, SCREEN_WIDTH, TITLE, FPS, CLOUD, DINO_STATE
+from dino_runner.utils.constants import BG, ICON, RUNNING, SCREEN_HEIGHT, SCREEN_WIDTH, TITLE, FPS, CLOUD, DINO_STATE, COLORS, AFTER_DEATH
 
 
 class Game:
     START = 0
     END = 0
+    START_TIME = 0
     def __init__(self):
         pygame.init()
         pygame.display.set_caption(TITLE)
@@ -24,7 +25,6 @@ class Game:
         self.player = Dino()
         self.obstacle_manager = ObstacleManager()
         self.points = 0
-        self.points_history = []
         self.runing = True
         self.death_count = 0
         self.x_pos_cloud = SCREEN_WIDTH
@@ -33,10 +33,12 @@ class Game:
         self.y_pos_cloud_c = 267
         self.power_up_manager = PowerUpManager()
         self.high_point = 0
+        self.index_color = 0
         
     def run(self):
         # Game loop: events - update - draw
         self.START = time.time()
+        self.START_TIME = time.time()
         self.create_component()
         self.playing = True
         self.points = 0
@@ -51,18 +53,26 @@ class Game:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 self.playing = False
-
+                
     def update(self):
         user_input = pygame.key.get_pressed()
         self.player.update(user_input)
         self.obstacle_manager.update(self)
-        self.power_up_manager.update(self.points, self.game_speed, self.player)
+        self.power_up_manager.update(self.points, self.game_speed, self.player, self.screen)
 
     def draw(self):
+        elapsed_time = time.time() - self.START_TIME
+        if elapsed_time > 10:
+            if self.index_color == 0:
+                self.index_color = 1
+            else:
+                self.index_color = 0
+            self.START_TIME = time.time()
+        
+        self.screen.fill(COLORS[self.index_color])
         self.clock.tick(FPS)
-        self.screen.fill((255, 255, 255))    
-        self.draw_background()
         self.player.draw(self.screen)
+        self.draw_background()
         self.score()
         self.obstacle_manager.draw(self.screen)
         self.power_up_manager.draw(self.screen)
@@ -100,22 +110,28 @@ class Game:
         self.print_menu_elements()
         pygame.display.update()
         self.handle_key_events_on_menu()
-        
+    
+    def print_menu_final():
+        pass
+    
     def print_menu_elements(self):
         if self.death_count == 0:
             text, text_rect = text_utils.get_centered_message("Press any Key to start", font_size= 25)
             self.screen.blit(text, text_rect)
+            self.screen.blit(DINO_STATE[0], (80, 305))
         else:
             if self.points > self.high_point:
                 self.high_point = self.points
-            text, text_rect = text_utils.get_centered_message(f" You have {self.death_count} deaths and {self.points} points on this {self.death_count}º round", font_size=20)
-            self.screen.blit(text, text_rect)
             minutes = 0
             if int(self.END - self.START) > 59:
                 minutes += 1
-            text, text_rect = text_utils.get_centered_message(f"Time {minutes} minutes and {int((self.END - self.START)//1)} seconds", 150, 100, 16)
+            text, text_rect = text_utils.get_centered_message(f"Time 0{minutes}:{int((self.END - self.START)//1)}", width=80, height=50, font_size= 16)
             self.screen.blit(text, text_rect)
-        self.screen.blit(DINO_STATE[0], (80, 310))
+            text, text_rect = text_utils.get_centered_message(f" You have {self.death_count} deaths and {self.points} points" , width=300, height=50, font_size=16)
+            self.screen.blit(text, text_rect)
+            self.screen.blit(DINO_STATE[1], (80, 305))
+            self.screen.blit(AFTER_DEATH[0], ((SCREEN_WIDTH // 2) - 200, (SCREEN_HEIGHT // 2) - 125))
+            self.screen.blit(AFTER_DEATH[1], ((SCREEN_WIDTH // 2) - 50, (SCREEN_HEIGHT // 2) - 50))
         
         
     def handle_key_events_on_menu(self):
@@ -133,11 +149,13 @@ class Game:
         self.points += 1
         if self.points % 100 == 0:
             self.game_speed += 1
-        text, text_rect = text_utils.get_score_element("Points: ", self.points)
+        text, text_rect = text_utils.get_score_element("Points: ", self.points, color = self.index_color)
         self.screen.blit(text, text_rect)
-        text, text_rect = text_utils.get_score_element("High Score: ",self.high_point, 880)
+        text, text_rect = text_utils.get_score_element("High Score: ",self.high_point, 880, color= self.index_color)
         self.screen.blit(text, text_rect)
-        self.player.check_invincibility(self.screen)
+        text, text_rect = text_utils.get_score_element("Lives: ",self.player.lives, 780, color= self.index_color)
+        self.screen.blit(text, text_rect)
+        self.player.check_invincibility(self.screen, self.index_color)
     
     def create_component(self):
         self.obstacle_manager.reset_obstacles()

@@ -65,6 +65,8 @@ CLOUD = pygame.image.load(os.path.join(IMG_DIR, 'Other/Cloud.png'))
 SHIELD = pygame.image.load(os.path.join(IMG_DIR, 'Other/shield.png'))
 HAMMER = pygame.image.load(os.path.join(IMG_DIR, 'Other/hammer.png'))
 
+HAMMER_WEAPON = pygame.image.load(os.path.join(IMG_DIR, 'Other/hammer_weapon.png'))
+
 BG = pygame.image.load(os.path.join(IMG_DIR, 'Other/Track.png'))
 
 HEART = pygame.image.load(os.path.join(IMG_DIR, 'Other/SmallHeart.png'))
@@ -73,5 +75,15 @@ DINO_STATE = [
     pygame.image.load(os.path.join(IMG_DIR, "Dino/DinoStart.png")),
     pygame.image.load(os.path.join(IMG_DIR, "Dino/DinoDead.png")),
 ]
+COLORS = [
+        (255, 255, 255),
+        (0, 0, 0)
+    ]
+AFTER_DEATH = [
+    pygame.image.load(os.path.join(IMG_DIR, 'Other/GameOver.png')),
+    pygame.image.load(os.path.join(IMG_DIR, 'Other/Reset.png')),
+]
+
 SHIELD_TYPE = "shield"
+HAMMER_TYPE = "hammer"
 DEFAULT_TYPE = "default"
