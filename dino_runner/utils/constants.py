@@ -69,4 +69,9 @@ BG = pygame.image.load(os.path.join(IMG_DIR, 'Other/Track.png'))
 
 HEART = pygame.image.load(os.path.join(IMG_DIR, 'Other/SmallHeart.png'))
 
+DINO_STATE = [
+    pygame.image.load(os.path.join(IMG_DIR, "Dino/DinoStart.png")),
+    pygame.image.load(os.path.join(IMG_DIR, "Dino/DinoDead.png")),
+]
+SHIELD_TYPE = "shield"
 DEFAULT_TYPE = "default"
