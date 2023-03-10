@@ -28,6 +28,10 @@ class Dino(Sprite):
         self.step_index = 0
         self.image = self.run_img[self.type][0]
         self.dino_rest = self.image.get_rect()
+        self.image_hammer = HAMMER
+        self.rect_hammer = self.image_hammer.get_rect()
+        self.rect_hammer.x = 100
+        self.rect_hammer.y = 310
         self.dino_rest.x = self.X_POS
         self.dino_rest.y = self.Y_POS
         self.dino_run = True
@@ -36,8 +40,7 @@ class Dino(Sprite):
         self.jump_vel = self.JUMP_VEL
         self.lives = self.LIVES
         self.setup_state_booleans()
-        self.rect_hammer = HAMMER.get_rect()
-        self.rect_hammer.x = 0
+        
         
     def setup_state_booleans(self):
         self.has_powerup = False
@@ -82,7 +85,7 @@ class Dino(Sprite):
     
     def draw(self, screen):
         if self.hammer:
-            screen.blit(HAMMER, (self.rect_hammer.x, self.dino_rest.y))
+            screen.blit(self.image_hammer, (self.rect_hammer.x, self.rect_hammer.y))
             self.rect_hammer.x += 10
         else:
             self.rect_hammer.x = 0

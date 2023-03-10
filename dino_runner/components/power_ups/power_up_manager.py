@@ -14,6 +14,7 @@ class PowerUpManager:
         self.points = 0
         self.options_number = list(range(1, 10))
         self.type_powerup = None
+        self.count_powerups = 0
             
     def reset_power_ups(self, points):
         self.power_ups = []
@@ -22,8 +23,7 @@ class PowerUpManager:
         self.when_appers = random.randint(200, 300)
         
     def generate_power_ups(self, points):
-        #ran = random.randint(0, 1)
-        ran = 1 # modi
+        ran = random.randint(0, 1)
         self.points = points
         if len(self.power_ups) == 0:
             if self.when_appers == self.points:
@@ -50,6 +50,7 @@ class PowerUpManager:
                 player.powerup_time_up = power_up.start_time + (time_random *1000)
                 player.type = power_up.type
                 player.show_text = True
+                self.count_powerups += 1
                 self.power_ups.remove(power_up)
     
     def draw(self, screen):

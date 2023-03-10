@@ -21,9 +21,11 @@ class ObstacleManager:
                 
             else:
                 self.obstacles.append(Bird(BIRD, random.randint(220, 300)))
-
         for obstacle in self.obstacles:
             obstacle.update(game.game_speed, self.obstacles)
+            if game.player.rect_hammer.colliderect(obstacle.rect):
+                self.obstacles.remove(obstacle)
+                
             if game.player.dino_rest.colliderect(obstacle.rect):
                 if not game.player.hammer and not game.player.shield:
                     pygame.time.delay(1000)
@@ -33,13 +35,13 @@ class ObstacleManager:
                     game.END = time.time()
                     game.START_TIME = game.END
                     break
-                elif game.player.rect_hammer.colliderect(obstacle.rect):
-                    self.obstacles.remove(obstacle)
                 else:
                     self.obstacles.remove(obstacle)
+                
     def draw(self, screen):
         for obstacle in self.obstacles:
             obstacle.draw(screen)
             
     def reset_obstacles(self):
         self.obstacles = []
+        

@@ -110,10 +110,7 @@ class Game:
         self.print_menu_elements()
         pygame.display.update()
         self.handle_key_events_on_menu()
-    
-    def print_menu_final():
-        pass
-    
+        
     def print_menu_elements(self):
         if self.death_count == 0:
             text, text_rect = text_utils.get_centered_message("Press any Key to start", font_size= 25)
@@ -125,6 +122,12 @@ class Game:
             minutes = 0
             if int(self.END - self.START) > 59:
                 minutes += 1
+            if self.player.lives == 0:
+                text, text_rect = text_utils.get_centered_message(f"Amount of power Ups {self.power_up_manager.count_powerups}", width=800, height=50, font_size= 16)
+                self.screen.blit(text, text_rect)
+                self.player.lives = self.player.LIVES
+                self.power_up_manager.count_powerups = 0
+                
             text, text_rect = text_utils.get_centered_message(f"Time 0{minutes}:{int((self.END - self.START)//1)}", width=80, height=50, font_size= 16)
             self.screen.blit(text, text_rect)
             text, text_rect = text_utils.get_centered_message(f" You have {self.death_count} deaths and {self.points} points" , width=300, height=50, font_size=16)
